@@ -32,7 +32,7 @@ mylen = TestData.shape[0]
 #duplicate values for pi and X
 PI = np.tile(pi,(mylen,1))
 print PI.shape
-X  = np.tile(TestData, (20,1))
+X  = np.tile(TestData.toarray(), (20,1,1))
 print X.shape
 MU = np.tile(mu, (mylen,1,1))
 print MU.shape

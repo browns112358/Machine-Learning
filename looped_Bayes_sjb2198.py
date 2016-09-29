@@ -20,19 +20,29 @@ n=TrainData.shape[1]
 for ii in range(20):
 	#train
 	ind = (TrainLabels.reshape(TrainLabels.shape[0],) ==(ii+1))
-	pi = np.sum(TrainData.toarray()[ind,:])/n
+	pi = np.linalg.norm(TrainData.toarray()[ind,:])/n
 	mu =  (1+np.sum(TrainData.toarray()[ind,:],axis=0))/(2+np.sum(ind))
 
 	#run
 	mylen = TrainData.shape[0]
-	X = TrainData
-#	MU=np.tile(mu, (mylen,1))
-	PI = pi * np.ones([mylen]) 
+	X = TrainData.toarray()
+	MU=np.tile(mu, (mylen,1))
+	PI = pi * np.ones([mylen])
 	
-	result = np.append(result, np.log(PI) + np.sum( X.toarray() * np.log(mu)+ (1-X.toarray())*np.log(1-mu), axis=0)) 
-	print ii
+ 	
+	result = np.append(result, np.log(PI) + np.sum( (X * np.log(MU))+ ((1-X)*np.log(1-MU)), axis=1))
 
-print result.shape
-result = result.reshape(mylen, 20)
+result = result.reshape(20, mylen)
+output = 1+np.argmax(result, axis=0)
 
-#Get Error Rates
+
+#get Error Rates
+corr = np.array([])
+for gg in range(mylen):
+	corr =np.append(corr,(output[gg] ==TrainLabels[gg]))
+print (np.mean(corr))*100.0
+
+#fmt = '{:<8}{:<20}{}'
+#for hh in range(50):
+#	print(fmt.format( output[hh], TestLabels[hh], corr[hh]))
+
