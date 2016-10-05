@@ -1,0 +1,32 @@
+# HTTP Cookie File for domains related to columbia.edu.
+# Downloaded with cookies.txt Chrome Extension (https://chrome.google.com/webstore/detail/njabckikapfpffapmjgojcnbfjonfjfg)
+# Example:  wget -x --load-cookies cookies.txt https://courseworks2.columbia.edu/courses/10789/files?
+#
+cas.columbia.edu	FALSE	/cas/	TRUE	0	JSESSIONID	F5A6BAE8BE0F5625689285265857C918
+.columbia.edu	TRUE	/	FALSE	1751542000	optimizelyEndUserId	oeu1436182000363r0.7882471205666661
+.columbia.edu	TRUE	/	FALSE	1517670884	s_fid	3A91BA16CDC04C0F-32A4C1F13BADEE15
+.columbia.edu	TRUE	/	FALSE	1774789347	optimizelySegments	%7B%223005871145%22%3A%22gc%22%2C%223008821522%22%3A%22false%22%2C%223039880743%22%3A%22search%22%7D
+.columbia.edu	TRUE	/	FALSE	1774789347	optimizelyBuckets	%7B%7D
+.columbia.edu	TRUE	/	FALSE	1490965347	mp_b166d393ff11409aafa20c065b8ce2ee_mixpanel	%7B%22distinct_id%22%3A%20%2214e631e38ccadd-08272d983-444a072a-1fa400-14e631e38cda63%22%2C%22%24search_engine%22%3A%20%22google%22%2C%22%24initial_referrer%22%3A%20%22https%3A%2F%2Fwww.google.com%2F%22%2C%22%24initial_referring_domain%22%3A%20%22www.google.com%22%7D
+.engineering.columbia.edu	TRUE	/	FALSE	1533296482	__utma	216280514.677011585.1436181826.1470224483.1470224483.1
+.engineering.columbia.edu	TRUE	/	FALSE	1485992482	__utmz	216280514.1470224483.1.1.utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=(not%20provided)
+.web.cvn.columbia.edu	TRUE	/	FALSE	1535130477	__utma	105068165.677011585.1436181826.1471523381.1472058478.14
+.web.cvn.columbia.edu	TRUE	/	FALSE	1487826477	__utmz	105068165.1436528030.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+.columbia.edu	TRUE	/	FALSE	1536411332	__utma	227718799.677011585.1436181826.1470239459.1473339259.5
+.columbia.edu	TRUE	/	FALSE	1489107332	__utmz	227718799.1468500181.3.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+sps.columbia.edu	FALSE	/	FALSE	1788705098	visitor_id127281	23376876
+info.sps.columbia.edu	FALSE	/	FALSE	1788705099	visitor_id127281	23376876
+info.sps.columbia.edu	FALSE	/	FALSE	1788705099	visitor_id127281-hash	f4f5af1220816c0c73172643dca487910730860cd13da25eb4e4df5b159cae70f7291d7ebaa371c3ef5fdd83851e667d37cbcf21
+.cvn.columbia.edu	TRUE	/	FALSE	1536752856	_ga	GA1.3.677011585.1436181826
+.courseworks2.columbia.edu	TRUE	/	FALSE	1538764314	__utma	189271225.677011585.1436181826.1475689079.1475692060.134
+.courseworks2.columbia.edu	TRUE	/	FALSE	1475694114	__utmb	189271225.4.9.1475692314998
+.courseworks2.columbia.edu	TRUE	/	FALSE	0	__utmc	189271225
+.courseworks2.columbia.edu	TRUE	/	FALSE	1491460314	__utmz	189271225.1475692060.134.80.utmcsr=cas.columbia.edu|utmccn=(referral)|utmcmd=referral|utmcct=/cas/login
+courseworks2.columbia.edu	FALSE	/	FALSE	0	log_session_id	d7f7fbb321eae81b23f80a33de36cd76
+courseworks2.columbia.edu	FALSE	/	TRUE	0	canvas_session	UzmKCBTbLCvGQv16bJjsRw.tRH5rh1Hf693Rq8lg-G9aygi2Ua4PbDVqO99y5Zgzx9jq683VuRAbI3LGlijH1lwMKCTwwcElOgWO-JLtP3YnxbkQIsUghD8rFunjVt9d5dxyqTOaw-_4-1MmhWA7ZxEj8ZeHTGLyIQjX3TSr7TaE7WZdDHXjrnxsdI9gqpadugTv1l1jmME50NiIRoMJWlM.Csu8EGWYL0gKm7fXt2WDvBCIA9w.V_VJVA
+courseworks2.columbia.edu	FALSE	/	TRUE	0	_csrf_token	kxFeAXz%2B6h5RiL%2FUpLDYxcZCg4Q9YyeCxnWV9hNLLUmmeRxRJMyzKQjn1qyTg5Odt3Cx%2FApXdOmEOaadZGBmfg%3D%3D
+www.columbia.edu	FALSE	/	FALSE	1475714618	BIGipServer~CUIT~www.columbia.edu-80-pool	1764244352.20480.0000
+cuit.columbia.edu	FALSE	/	FALSE	0	has_js	1
+.columbia.edu	TRUE	/	FALSE	1538765018	_ga	GA1.2.677011585.1436181826
+.columbia.edu	TRUE	/	FALSE	1475693618	_gat	1
+cuit.columbia.edu	FALSE	/	FALSE	1475736220	BIGipServer~CUIT~ias-drupal7-prod.cc.columbia.edu-80-pool	811416448.20480.0000
