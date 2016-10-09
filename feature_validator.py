@@ -4,22 +4,13 @@ import scipy.sparse as sps
 import pandas as pd
 from nltk import ngrams
 from sklearn.feature_extraction.text import CountVectorizer as CV
-from sklearn.feature_extraction.text import WordNGramAnalyzer as WNGA
-from sklearn.cross_validation import cross_val_score
+from sklearn.model_selection import cross_val_score
 from sklearn.feature_extraction.text import TfidfVectorizer as TFIDFVec
-
-#Reading in Data
-train = pd.read_csv('reviews_tr.csv', sep=',', header=0, dtype={'a': np.int32, 'b': str})
-TrainLabels=train.values[:,0]
-TrainData  =train.values[:,1]
-test = pd.read_csv('reviews_te.csv', sep=',', header=0, dtype={'a': np.int32, 'b': str})
-TestLabels=test.values[:,0]
-TestData  =test.values[:,1]
 
 
 #Data Representations
 def Ngram(Data,n):
-	Vec= CV(WNGA(max_n=n, min_n=n))
+	Vec =CV(ngram_range=(n,n), min_df=1)
 	output = Vec.fit_transform(Data)
 	return output
 	
@@ -30,55 +21,82 @@ def TfIdf(Data):
 
 
 #Learning Methods
-def Ave_Perceptron(TrD, TrL, TeD):
-	return TeD
+class Ave_Perceptron:
+        def __init__(self, result =np.array([])):
+                self.result=result
+        def predict(self, X):
+                #test
+                print 'predicting'
+                output=np.array([])
+ 		#add code here
+                return self.output
+        def classify(self, inputs):
+                print 'Classifing'
+                return self.predict(inputs)
+        def fit(self, X, y, **kwargs):
+                print 'fitting'
+              	#add code here
+        def get_params(self, deep = False):
+                return {'result':self.result}
+        def score(self, X, Y_true):
+                Y=self.classify(X)
+                print 'scoring'
+                corr = np.array([])
+                for gg in range(len(Y_true)):
+                        corr =np.append(corr, (Y[gg] == Y_true[gg]))
+                self.score = (1-np.mean(corr))*100.0
+                return self.score
 
 class NBayes:
 	def __init__(self, result =np.array([])):
 		self.result=result
-		
-	def fit(self, X, y):
+
+	def predict(self, X):
+		#test
+		print 'predicting'
+		output=np.array([])
+		for ii in range(X.shape[0]):
+			N=X[ii,:].toarray()
+			val= np.sum(N+self.my_mu)+self.my_pi
+			if (val>0):
+				output=np.append(output, 1)
+			else:
+				output=np.append(output,0)
+		self.output=output
+		return self.output
+
+	def classify(self, inputs):
+		print 'Classifing'
+        	return self.predict(inputs)		
+
+	def fit(self, X, y, **kwargs):
+		print 'fitting'
 		n=X.shape[1]
-		result=self.result
+		pi=np.array([0,0])
+		mu=np.array([np.zeros([n]), np.zeros([n])])
 		for ii in range(2):
 			#train
 			ind = (y ==(ii))
-			pi = np.linalg.norm(X[ind,:])/n
-			mu =  (1+np.sum(TrD[ind,:],axis=0))/(2+np.sum(ind))
+			pi[ii] = (X[ind,:].sum())/n
+			mu[ii] =  (1+X[ind,:].sum(axis=0))/(2+np.sum(ind))
+		self.mu=mu
+		self.pi=pi
+		self.my_mu=mu[1]-mu[0]
+		self.my_pi=pi[1]-pi[0]
+		print 'done fitting'
 
-			#run
-			mylen = X.shape[0]
-			MU=np.tile(mu, (mylen,1))
-			PI = pi * np.ones([mylen])
-				
-			result = np.append(result, np.log(PI) + np.sum( (X * np.log(MU))+ ((1-X)*np.log(1-MU)), axis=1))
+    	def get_params(self, deep = False):
+        	return {'result':self.result}
 
-		result=result.reshape(2, mylen)
-		self.output=np.argmax(result, axis=0)
-		return self.output
+	def score(self, X, Y_true):
+		Y=self.classify(X)
+		print 'scoring'
+		corr = np.array([])
+		for gg in range(len(Y_true)):
+			corr =np.append(corr, (Y[gg] == Y_true[gg]))
+		self.score = (1-np.mean(corr))*100.0
+		return self.score
 
-#def Bayes(TrD, TrL, TeD):
-#	result=np.array([])
-#	#train
-#	n=TrD.shape[1]
-#	for ii in range(2):
-#		#train
-#		ind = (TrL ==(ii))
-#		pi = np.linalg.norm(TrD[ind,:])/n
-#		mu =  (1+np.sum(TrD[ind,:],axis=0))/(2+np.sum(ind))
-#
-#		#run
-#		mylen = TeD.shape[0]
-#		X = TeD
-#		MU=np.tile(mu, (mylen,1))
-#		PI = pi * np.ones([mylen])
-#			
-#		result = np.append(result, np.log(PI) + np.sum( (X * np.log(MU))+ ((1-X)*np.log(1-MU)), axis=1))
-#
-#	result=result.reshape(2, mylen)
-#	output=np.argmax(result, axis=0)
-#	return output
-	
 #other Functions
 def PerError(TeL, result):
 	corr = np.array([])
@@ -88,9 +106,25 @@ def PerError(TeL, result):
 
 #main code
 def main():
+	#Reading in Data
+	train = pd.read_csv('reviews_tr.csv', sep=',', header=0, dtype={'a': np.int32, 'b': str})
+	TrainLabels=train.values[:,0]
+	TrainData  =train.values[:,1]
+	print 'done reading training data'
+
+	#Bayes and Unigram
 	X=Ngram(TrainData,1)
-	score=cross_val_score(NBayes(),X, TrainLabels, cv=5)
-	print score
+	scores=cross_val_score(NBayes(),X, TrainLabels, cv=5)
+	print("Accuracy of Bayes with Unigram : %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+        #Bayes and TfIdf
+        X=TfIdf(TrainData)
+        scores=cross_val_score(NBayes(),X, TrainLabels, cv=5)
+        print("Accuracy of Bayes with TfIdf : %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+	test = pd.read_csv('reviews_te.csv', sep=',', header=0, dtype={'a': np.int32, 'b': str})
+	TestLabels=test.values[:,0]
+	TestData  =test.values[:,1]
 
 if __name__ == "__main__":
 	main()
