@@ -6,7 +6,7 @@ from nltk import ngrams
 from sklearn.feature_extraction.text import CountVectorizer as CV
 from sklearn.model_selection import cross_val_score
 from sklearn.feature_extraction.text import TfidfVectorizer as TFIDFVec
-
+from numpy.random import shuffle
 
 #Data Representations
 def Ngram(Data,n):
@@ -28,14 +28,35 @@ class Ave_Perceptron:
                 #test
                 print 'predicting'
                 output=np.array([])
- 		#add code here
+ 		for ii in range(X.shape[0]):
+			output= np.append(output, (np.dot(self.W, X[ii,:]))>0)
                 return self.output
         def classify(self, inputs):
                 print 'Classifing'
                 return self.predict(inputs)
         def fit(self, X, y, **kwargs):
                 print 'fitting'
-              	#add code here
+              	#Set 0 class to -1
+		y[y==0]=-1
+		#randomly shuffle (returns random indices
+		s_indx=shuffle(np.arange(len(y)))
+		#begin first pass.  Note: this weight will only be used as a seed for the second pass
+		w=zeros(X.shape[1])
+		for ii in range(len(y)):
+			if ((y[s_indx[ii]]*np.dot(w, X[s_indx[ii],:])) <= 0):
+				w=w+y[s_indx[ii]]*X[s_indx[ii],:]
+		#begin 2nd pass
+		w=w/len(y)
+		s_inx=shuffle(np.arange(len(y)))
+		for jj in range(len(y)):
+			my_val=y[s_indx[jj]]*np.dot(w, X[s_indx[jj],:])
+			if (my_val <= 0):
+				w= w +y[s_indx[jj]] * X[s_indx[jj],:]/jj
+			else:
+				w = w + w/jj
+		self.W = w
+			
+
         def get_params(self, deep = False):
                 return {'result':self.result}
         def score(self, X, Y_true):
@@ -112,15 +133,30 @@ def main():
 	TrainData  =train.values[:,1]
 	print 'done reading training data'
 
-	#Bayes and Unigram
+	#Unigram
 	X=Ngram(TrainData,1)
+	scores=cross_val_score(Ave_Perceptron(),X, TrainLabels, cv=5)
+	print("Accuracy of Perceptron with Unigram : %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 	scores=cross_val_score(NBayes(),X, TrainLabels, cv=5)
 	print("Accuracy of Bayes with Unigram : %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
-        #Bayes and TfIdf
+        #TfIdf
         X=TfIdf(TrainData)
-        scores=cross_val_score(NBayes(),X, TrainLabels, cv=5)
+        scores=cross_val_score(Ave_Perceptron(),X, TrainLabels, cv=5)
+	print("Accuracy of Perceptron with TfIdf : %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+	scores=cross_val_score(NBayes(),X, TrainLabels, cv=5)
         print("Accuracy of Bayes with TfIdf : %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+	# Bigram
+	X=Ngram(TrainData,2)
+	scores=cross_val_score(Ave_Perceptron(),X, TrainLabels, cv=5)
+	print("Accuracy of Perceptron with Bigram : %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+	
+	# Trigram
+	X=Ngram(TrainData,3)
+	scores=cross_val_score(Ave_Perceptron(),X, TrainLabels, cv=5)
+	print("Accuracy of Perceptron with Trigram : %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
 
 	test = pd.read_csv('reviews_te.csv', sep=',', header=0, dtype={'a': np.int32, 'b': str})
 	TestLabels=test.values[:,0]
