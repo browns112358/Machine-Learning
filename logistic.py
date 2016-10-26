@@ -79,26 +79,31 @@ def main():
 #	A = np.array([[2, -2, 3],[-100, 100, -100],[3, -2, 2]])
 	A = np.array([[1, 0,0],[0,1,0],[0,0,1]])
 	X=np.dot(X,A)
+        #partition X
+        X_train=X[0:.8*X.shape[0],:]
+        X_test =X[.8*X.shape[0]:X.shape[0],:]
+	Y_train=Y[0:.8*X.shape[0],]
+	Y_test =Y[.8*X.shape[0]:X.shape[0],]
 	#initialize 
 	beta0=np.array([0])
 	beta =np.array([0,0,0])
-	T=10
 	error=np.array([])
 	iteration=np.array([])
 	counter=1
 	my_error=Objective(beta0, beta, X, Y)
-	bound=0.65064
+#	bound=0.65064*1.01
+	bound=0.71571*1.01
 	error = np.append(error, my_error)
 	iteration = np.append(iteration, counter)
 	
 	while my_error>bound:
-		beta0, beta =Grad_Descent(beta0, beta, T, X, Y)
-		my_error= Objective(beta0, beta, X, Y)
+		beta0, beta =Grad_Descent(beta0, beta, 2**counter, X_train, Y_train)
+		my_error= Objective(beta0, beta, X_test, Y_test)
 		counter=counter+1
 
 		print my_error
 		error=np.append(error, my_error)	
-		iteration=np.append(iteration, T*counter)	     
+		iteration=np.append(iteration, 2**counter)	     
 
 	#print a plot of the error
 	plt.plot(iteration, np.abs(error), 'r--')
