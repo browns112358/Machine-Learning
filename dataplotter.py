@@ -10,7 +10,6 @@ from mpl_toolkits.mplot3d import Axes3D
 def main():
 
 	A=np.array([[2,-2,3], [-100, 100, -100], [3, -2, 2]])
-#	A=np.random.rand(3,3)
 
 	X=all_data['data']
 	Y=all_data['labels']
@@ -24,6 +23,16 @@ def main():
 	Y0=(X[Y==0, 1])
 	Z1=(X[Y==1, 2])
 	Z0=(X[Y==0, 2])
+
+        #some stats
+        print "Mean of class 0 "
+        print X0.mean()
+        print Y0.mean()
+        print Z0.mean()
+        print "Mean of Class 1"
+        print X1.mean()
+        print Y1.mean()
+        print Z1.mean()
 
 	#3d plot	
 	fig=plt.figure()
@@ -52,16 +61,6 @@ def main():
 	plt.ylabel('Z')
 	plt.show()
 
-	#some stats
-	print "Mean of class 0 "
-	print X0.mean()
-	print Y0.mean()
-	print Z0.mean()
-
-	print "Mean of Class 1"
-	print X1.mean()
-	print Y1.mean()
-	print Z1.mean()
 
 if __name__ == "__main__":
         main()

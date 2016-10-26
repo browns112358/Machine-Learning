@@ -58,7 +58,12 @@ def Line_search(grad, beta0, beta, x,y, switch):
 		else:
 			eh=eta
 	return eta
-			  
+
+def holdout(beta0, beta, x, y):
+	guess= np.sign(np.inner(beta, x)+beta0)  #mx+b
+	guess[guess==-1]=0
+	output=1-np.mean(guess==y)
+	return output			  
 			
 
 def Grad_Descent(beta0, beta, T,  x, y):
@@ -76,8 +81,8 @@ def main():
 	Y=all_data['labels']
 	Y=Y.reshape([Y.shape[0],])
 	#Linear transformation of x
-#	A = np.array([[2, -2, 3],[-100, 100, -100],[3, -2, 2]])
-	A = np.array([[1, 0,0],[0,1,0],[0,0,1]])
+	A = np.array([[2, -2, 3],[-100, 100, -100],[3, -2, 2]])
+#	A = np.array([[1, 0,0],[0,1,0],[0,0,1]])
 	X=np.dot(X,A)
 	#initialize 
 	beta0=np.array([0])
@@ -98,8 +103,11 @@ def main():
 
 		print my_error
 		error=np.append(error, my_error)	
-		iteration=np.append(iteration, T*counter)	     
-
+		iteration=np.append(iteration, T*counter)
+#		print holdout(beta0, beta, X, Y)
+	
+	hout=holdout(beta0, beta, X, Y)	     
+	print "Holdout Error" +str(hout)
 	#print a plot of the error
 	plt.plot(iteration, np.abs(error), 'r--')
 	plt.plot(iteration, bound * np.ones(iteration.shape))
