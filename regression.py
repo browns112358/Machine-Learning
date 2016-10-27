@@ -9,8 +9,10 @@ all_data = loadmat('hw4data.mat')
 def Objective(beta0, beta, x, y):
 	n=x.shape[0]
 	main= beta0 + np.inner(beta, x)
-	first_term= np.sum(np.log(1+ np.exp(main))-y*main)
-	output=first_term/n
+	first_term= np.sum(np.log(1+ np.exp(main)))
+	sec_term=np.sum(-1*y*main)
+#	print str(sec_term) + " + "+str(first_term)+"main= "+ str(main.mean())
+	output=(first_term+sec_term)/n
 	return output
 
 def Derv_beta(beta0, beta, x, y):
@@ -77,9 +79,10 @@ def Grad_Descent(beta0, beta, T,  x, y):
 	return beta0 , beta
 	
 def main():
-	X=all_data['data']
+	X=all_data['data'].astype(np.float32)
 	Y=all_data['labels']
-	Y=Y.reshape([Y.shape[0],])
+	Y=Y.reshape([Y.shape[0],]).astype(np.float32)
+#	Y[Y==0]= -1
 	#Linear transformation of x
 	A = np.array([[2, -2, 3],[-100, 100, -100],[3, -2, 2]])
 #	A = np.array([[1, 0,0],[0,1,0],[0,0,1]])
@@ -87,33 +90,34 @@ def main():
 	#initialize 
 	beta0=np.array([0])
 	beta =np.array([0,0,0])
-	T=10
+	T=100
 	error=np.array([])
 	iteration=np.array([])
 	counter=1
 	my_error=Objective(beta0, beta, X, Y)
-	bound=0.65064
+	bound=0.065064
 	error = np.append(error, my_error)
 	iteration = np.append(iteration, counter)
-	
+	print my_error	
 	while my_error>bound:
 		beta0, beta =Grad_Descent(beta0, beta, T, X, Y)
 		my_error= Objective(beta0, beta, X, Y)
 		counter=counter+1
 
-		print my_error
+		hout=holdout(beta0, beta, X, Y)
+		print str(my_error)+ "        " + str(100.0*hout) + "%"
 		error=np.append(error, my_error)	
 		iteration=np.append(iteration, T*counter)
-#		print holdout(beta0, beta, X, Y)
 	
 	hout=holdout(beta0, beta, X, Y)	     
-	print "Holdout Error" +str(hout)
+	TITLE='Iterations: '+str(np.max(iteration)) + " Holdout Error: " +str(hout)
+	print TITLE
 	#print a plot of the error
 	plt.plot(iteration, np.abs(error), 'r--')
 	plt.plot(iteration, bound * np.ones(iteration.shape))
 	plt.xlabel('iteration of Gradient Descent')
 	plt.ylabel('absolute error')
-	plt.title('Iterations: '+str(counter))
+	plt.title(TITLE)
 	plt.show()
 
 if __name__ == "__main__":

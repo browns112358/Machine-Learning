@@ -96,11 +96,11 @@ def main():
 	counter=1
 	my_error=holdout(beta0, beta, X, Y)
 #	bound= 1-((1-.5200)*.99)
-	bound= 1-((1-.3718)*.99)
+	bound= 1-((1-.3719)*.99)
 	error = np.append(error, my_error)
-	iteration = np.append(iteration, counter)
+	iteration = np.append(iteration, 2**counter)
 	
-	while my_error>bound:
+	while ((error.min()>bound) or (iteration.max()<32)):
 		beta0, beta =Grad_Descent(beta0, beta, 2**counter, X_train, Y_train)
 		my_error= holdout(beta0, beta, X_test, Y_test)
 		counter=counter+1
