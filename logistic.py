@@ -80,8 +80,8 @@ def main():
 	Y=all_data['labels']
 	Y=Y.reshape([Y.shape[0],])
 	#Linear transformation of x
-	A = np.array([[2, -2, 3],[-100, 100, -100],[3, -2, 2]])
-#	A = np.array([[1, 0,0],[0,1,0],[0,0,1]])
+#	A = np.array([[2, -2, 3],[-100, 100, -100],[3, -2, 2]])
+	A = np.array([[1, 0,0],[0,1,0],[0,0,1]])
 	X=np.dot(X,A)
         #partition X
         X_train=X[0:.8*X.shape[0],:]
@@ -95,8 +95,8 @@ def main():
 	iteration=np.array([])
 	counter=1
 	my_error=holdout(beta0, beta, X, Y)
-#	bound= 1-((1-.5200)*.99)
-	bound= 1-((1-.3719)*.99)
+	bound= 1-((1-.5000)*.99)
+#	bound= 1-((1-.3719)*.99)
 	error = np.append(error, my_error)
 	iteration = np.append(iteration, 2**counter)
 	
