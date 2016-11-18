@@ -14,16 +14,19 @@ Y_te = all_data['testlabels']
 
 def main():
 	#OLS
-	names=['CONST','CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSAT']
+	names=np.array(['CONST','CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'B', 'LSAT'])
 	OLS = ols.ols(Y, X, 'MEDV', names)
 	guess= np.inner(X_te, np.transpose(OLS.b))
 	print ("OLS Mean squared Error : %f" % np.mean(np.power(Y_te-guess,2)))	
 
 	#Sparse
-	LARS = Lars(n_nonzero_coefs=3, fit_intercept=False)
+	LARS = Lars(n_nonzero_coefs=4, fit_intercept=False)
 	LARS.fit(X, Y)
 	print 'LARS'
-	print LARS.coef_.shape
+	print(names[LARS.coef_ != 0])
+	guess=LARS.predict(X_te)
+	error=np.mean(np.power(Y_te-guess,2))
+	print("LARS Mean Squared Error : %f" % error)
 
 if __name__ == "__main__":
         main()

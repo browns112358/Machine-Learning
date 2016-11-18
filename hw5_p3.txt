@@ -1,0 +1,4 @@
+OLS Mean squared Error : 24.406564
+LARS
+['CONST' 'RM' 'PTRATIO' 'LSAT']
+LARS Mean Squared Error : 113.739709
